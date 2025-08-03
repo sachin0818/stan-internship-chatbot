@@ -1,0 +1,16 @@
+# Python virtual environment folder
+/venv
+
+# Local ChromaDB database folder
+/chroma_db
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Environment variables file (contains secrets!)
+.env
+
+# IDE and editor specific folders
+.idea/
+.vscode/
