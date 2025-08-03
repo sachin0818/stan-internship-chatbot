@@ -1,0 +1,96 @@
+# STAN Internship Challenge: Human-Like Conversational AI
+
+**Submitted by:**[Sachin]
+
+## 1. Project Overview
+
+This project is a human-like conversational chatbot agent built to fulfill the requirements of the STAN Internship Challenge. The primary objective was to create an intelligent and engaging AI that goes beyond basic Q&A, demonstrating key capabilities in empathy, contextual awareness, long-term memory, and scalability.
+
+The chatbot is designed with a modular backend that can be easily integrated into consumer-facing applications, such as social or user-generated content platforms. It leverages a powerful Large Language Model (LLM) for natural language generation and a local vector database to provide persistent, personalized memory for each user.
+
+### Core Features Implemented:
+*   **Human-Like Interaction:** Delivers natural, emotionally engaging conversations by adapting its tone and behavior based on context.
+*   **Personalized Long-Term Memory:** Remembers user preferences, names, and past conversation topics across different sessions.
+*   **Contextual Awareness:** Uses conversation history to provide relevant and coherent responses that evolve over time.
+*   **Scalable Architecture:** Built with a stateless Flask backend and a stateful vector store, allowing it to handle multiple users.
+
+---
+
+## 2. Architecture & Technology Stack
+
+The application is built on a modern, efficient, and scalable technology stack, prioritizing open-source tools and ease of local setup.
+
+*   **Backend:** **Python** with the **Flask** web framework. Flask was chosen for its lightweight nature and flexibility, making it ideal for creating a modular API endpoint for the chatbot.
+*   **Language Model (LLM):** **Google Gemini 1.5 Flash** via the `google-generativeai` library. This model provides an excellent balance of speed, conversational quality, and cost-effectiveness, making it perfect for a responsive chat application.
+*   **Memory / Database:** **Chroma DB**. Chroma is an open-source vector database that runs locally. It is used to store conversational history as vector embeddings, enabling efficient semantic search to retrieve the most relevant context for any given user. This forms the foundation of the bot's long-term memory.
+*   **Frontend:** Simple **HTML, CSS, and vanilla JavaScript** to create a clean and functional user interface for demonstrating the chatbot's capabilities.
+*   **Environment Management:** **Python `venv`** for dependency isolation and **`python-dotenv`** for securely managing the API key.
+
+### How it Works: The Request-Response Flow
+
+1.  **User Message:** The user types a message in the web interface and clicks "Send".
+2.  **API Call:** The JavaScript frontend sends a `POST` request to the `/chat` endpoint on the Flask server.
+3.  **Add to Memory:** The server receives the message and immediately adds it to the user's history in the Chroma DB collection.
+4.  **Context Retrieval:** The server queries Chroma DB for the most recent and relevant conversation snippets for that specific user.
+5.  **Prompt Engineering:** A detailed prompt is constructed. It includes a persona for the bot, the retrieved conversation history (context), and the new user message.
+6.  **LLM Generation:** This complete prompt is sent to the Google Gemini API.
+7.  **Response Handling:** The server receives the generated text response from Gemini.
+8.  **Save Response:** The bot's response is also saved to Chroma DB to ensure it's part of the context for future turns.
+9.  **Send to User:** The final response is sent back to the frontend as a JSON object, which JavaScript then displays in the chat window.
+
+---
+
+## 3. Setup and Usage Instructions
+
+Follow these steps to run the chatbot on your local machine.
+
+### Prerequisites
+*   Python 3.8+
+*   A Google Gemini API Key. You can get one from [Google AI Studio](https://aistudio.google.com/app/apikey).
+
+### Step 1: Clone the Repository
+```bash
+git clone <your-github-repo-url>
+cd stan-internship-chatbot
+```
+
+### Step 2: Set Up the Python Virtual Environment
+It is highly recommended to use a virtual environment to manage project dependencies.
+
+**On Windows:**
+```powershell
+python -m venv venv
+.\venv\Scripts\activate
+```
+
+**On macOS / Linux:**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### Step 3: Install Dependencies
+Install all the required Python packages from the `requirements.txt` file.
+```bash
+pip install -r requirements.txt
+```
+
+### Step 4: Configure Your API Key
+The application loads the Gemini API key from an environment file for security.
+
+1.  Create a file named `.env` in the root directory of the project.
+2.  Open the `.env` file and add your API key in the following format:
+    ```
+    GEMINI_API_KEY=YourActualApiKeyGoesHere
+    ```
+3.  Replace `YourActualApiKeyGoesHere` with your real key. **Do not** use quotes.
+
+### Step 5: Run the Application
+With the environment active and the API key configured, start the Flask server.
+```bash
+python -m app.main
+```
+The server will start, and you will see output indicating it is running on `http://127.0.0.1:5000`.
+
+### Step 6: Chat with the Bot
+Open your web browser and navigate to **http://127.0.0.1:5000**. You can now start interacting with your human-like chatbot! The conversation history will be persisted locally in the `chroma_db` directory.
